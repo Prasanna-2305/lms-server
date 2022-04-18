@@ -5,7 +5,7 @@ const courseRouter = express.Router()
 
 const storage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, '/public/images')
+    callback(null, './public/')
 
   },
   filename: (req, file, callback) => {
@@ -18,10 +18,10 @@ const upload = multer({ storage: storage });
 courseRouter.post("/create", upload.single("image"), async (req, res) => {
   
   try {
-    // const imageUrl = `http://localhost:8001/src/uploads/images/${req.file.originalname}`;
+   
     
     const link = req.protocol + '://' + req.get('host')
-    const imageUrl = link + req.file.originalname;
+    const imageUrl = link + '/' + req.file.originalname;
     
     const user = new AddCourse({
       title: req.body.title,
@@ -57,13 +57,14 @@ courseRouter.get("/view/:_id", async (req, res) => {
     res.status(400).send(e);
   }
 })
-courseRouter.put('/update/:_id', async (req, res) => {
+courseRouter.put('/update/:_id', upload.single("image"), async (req, res) => {
   try {
-    //   const userid = 
+    console.log(req.params)
     const user = await AddCourse.findByIdAndUpdate(req.params._id, req.body, {
       new: true
     })
     res.send(user);
+    console.log(req.body)
   } catch (e) {
     res.status(400).send(e);
     console.log(res.status(400).send(e));

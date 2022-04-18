@@ -63,6 +63,28 @@ router.get("/read", async (req, res) => {
     res.status(400).send(e);
   }
 })
+router.get("/view/:_id", async (req, res) => {
+  try {
+    const userid = req.params._id
+    const user = await UserRegister.findById(userid);
+    res.send(user)
+  } catch (e) {
+    res.status(400).send(e);
+  }
+})
+
+router.put('/update/:_id', async (req, res) => {
+  try {
+    //   const userid = 
+    const user = await UserRegister.findByIdAndUpdate(req.params._id, req.body, {
+      new: true
+    })
+    res.send(user);
+  } catch (e) {
+    res.status(400).send(e);
+    console.log(res.status(400).send(e));
+  }
+})
 
 router.delete('/delete/:_id', async (req, res) => {
   try {
