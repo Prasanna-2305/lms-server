@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 const addCourse = new mongoose.Schema({
+    userId:{
+       type: String,
+       //ref:"UserRegister",
+    },
     title:{
         type : String,
         trim : true,
@@ -17,7 +22,13 @@ const addCourse = new mongoose.Schema({
     file: {
         type :  String,
         required : true
-    }
+    },
+    likes: {
+        type: Array,
+        default: [],
+        
+    },
+  
 })
 
 const AddCourse = new mongoose.model("AddCourse", addCourse)
