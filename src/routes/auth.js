@@ -48,8 +48,10 @@ router.post('/login', async (req, res) => {
   const validPassword = await bcrypt.compare(req.body.password, user.password);
   if (!validPassword) return res.status(400).send('Invalid password');
 
+  const tokenKey = process.env.JWT_TOKEN_SECRET
+
   //create token 
-  const token = jwt.sign({ _id: user._id, isAdmin: user.isAdmin }, "token");
+  const token = jwt.sign({ _id: user._id, isAdmin: user.isAdmin }, tokenKey);
   res.header('auth-token', token).send({ user: user, token: token });
   // res.send('logged in ')
 });
@@ -63,7 +65,7 @@ router.get("/read", async (req, res) => {
     res.status(400).send(e);
   }
 })
-router.get("/view/:_id", async (req, res) => {
+router.get("/view/:id", async (req, res) => {
   try {
     const userid = req.params._id
     const user = await UserRegister.findById(userid);
