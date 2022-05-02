@@ -3,7 +3,7 @@ const { ObjectId } = mongoose.Schema.Types
 const addCourse = new mongoose.Schema({
     userId: {
         type: ObjectId,
-        ref:"UserRegister"
+        ref: "UserRegister"
     },
     title: {
         type: String,
@@ -27,6 +27,14 @@ const addCourse = new mongoose.Schema({
         type: Array,
         default: [],
     },
+    comments: [{
+        text: String,
+        postedBy: { type: String, ref: "UserRegister" },
+        userInfo: { type: ObjectId, ref: "UserRegister" },
+        date: {
+            type: String,
+        }
+    }],
 
 })
 

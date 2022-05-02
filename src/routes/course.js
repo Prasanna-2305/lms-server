@@ -116,9 +116,30 @@ courseRouter.put("/like/:id", async (req, res) => {
   catch (err) {
     res.status(500).send(err);
   }
-
 })
 
+courseRouter.put('/comment', auth, async (req, res) => {
+  try {
+    const comment = {
+      text: req.body.texts,
+      postedBy: req.body.usersName,
+      userInfo: req.body.users_id,
+      date: new Date().toDateString(),
+    }
+    await AddCourse.findByIdAndUpdate(req.body.allCourses_id, {
+      $push: { comments: comment }
+    }, {
+      new: true
+    })
+      .populate("postedBy", "usersName")
+      .populate("userInfo", "users_id")
+      .populate("comments.postedBy", "users_id usersName")
+      .populate("comments.userInfo", "_id")
+    res.status(200).send(comment)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
 
 
 export default courseRouter;
