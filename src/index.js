@@ -15,6 +15,11 @@ index.use("/users", router)
 index.use("/addcourse", courseRouter)
 dotenv.config()
 const port = process.env.PORT || 8001;
+
+if(process.env.NODE_ENV == "production")
+{
+    index.use(express.static("/client/build"))
+}
 index.listen(port, function () {
     console.log(`connected port ${port}`);
 })
